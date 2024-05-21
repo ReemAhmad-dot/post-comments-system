@@ -6,14 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
+use App\Models\Category;
 use App\Models\Post;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
-{   use ApiResponseTrait;
-
+{   
+    use ApiResponseTrait;
     public function __construct()
     {
       $this->middleware('auth:api')->except(['index', 'show']);
@@ -36,16 +37,19 @@ class PostController extends Controller
     {
         //auth()->user()->posts()->save($post);
         $validatedData=$request->validated();
-        $post=Post::create([
-            "title"=>$validatedData['title'],
-            "body"=>$validatedData['body'],
-            "user_id"=>Auth::id(),
-            "category_id"=> $validatedData['category_id'],
-        ]);
-        if ($post){
-            $data=new PostResource($post);
-            return $this->successResponse("Post Created Successfully",$data,201);
+        if(Category::where("id",$request->category_id)->exists()){
+            $post=Post::create([
+                "title"=>$validatedData['title'],
+                "body"=>$validatedData['body'],
+                "user_id"=>Auth::id(),
+                "category_id"=> $validatedData['category_id'],
+            ]);
+            if ($post){
+                $data=new PostResource($post);
+                return $this->successResponse("Post Created Successfully",$data,201);
+            }
         }
+        return $this->errorResponse($message='Invalid.... category you entered doesn\'t exist');
     }
 
     /**
@@ -94,10 +98,9 @@ class PostController extends Controller
                 $post->delete();
                 return $this->successResponse("Post deleted successfully",204);
             }else{
-                return $this->notFoundResponse("Post Not Found");
+                return $this->errorResponse("Forbidden Action");
             }
-        
-        return $this->errorResponse("Forbidden Action");
         }
+        return $this->notFoundResponse("Post Not Found");
     }
 }

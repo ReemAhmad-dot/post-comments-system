@@ -8,9 +8,11 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Traits\ApiResponseTrait;
 
 class CategoryController extends Controller
 {   
+    use ApiResponseTrait;
     public function __construct()
     {
       $this->middleware('auth:api')->except(['index', 'show']);

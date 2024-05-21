@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -27,7 +28,7 @@ class UserController extends Controller
             "status" => true,
             "message" => "User profile data",
             "data" => [
-                'user' =>$user_data
+                'user' =>new UserResource($user_data),
             ],
         ]);
     }

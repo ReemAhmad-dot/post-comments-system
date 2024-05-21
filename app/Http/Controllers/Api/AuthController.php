@@ -84,6 +84,6 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => "User logged out"
-        ],204);
+        ]);
     }
 }

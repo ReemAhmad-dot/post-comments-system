@@ -82,7 +82,7 @@ class CategoryController extends Controller
         $category=Category::find($id);
         if($category){
             $category->delete();
-            return $this->successResponse("Category deleted successfully",204);
+            return $this->successResponse("Category deleted successfully",$statusCode=204);
         }else{
             return $this->notFoundResponse("Category Not Found");
         }

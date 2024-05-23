@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ Route::group(["middleware" => ["auth:api"]], function(){
 
     
     
-    //Route::apiresource('posts.comments', 'CommentController::class');
+    Route::apiresource('posts.comments', CommentController::class);
 });
 
 Route::apiResources([

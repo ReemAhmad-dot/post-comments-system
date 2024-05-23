@@ -25,6 +25,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('user')
+            ->withCount('comments')
             ->latest()
             ->paginate(5);
         return $this->successResponse("success",PostResource::collection($posts));
@@ -57,7 +58,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post=Post::find($id);
+        $post=Post::withCount('comments')->find($id);
         if($post){
             return $this->successResponse("Post Found",new PostResource($post));
             
